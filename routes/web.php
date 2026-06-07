@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\Book;
+use App\Models\Borrower;
+use App\Models\Borrowing;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\Routing\Router;
@@ -68,59 +71,59 @@ Route::get('/book', function(){
     ";
 });
 
-//router borrower
-Route::get('/borrower', function(){
-    return "
-    <body>
-        <h1>Halaman Daftar Peminjaman</h1>
-        <table border='1' cellpadding='10' cellspacing='0'>
-            <thead>
-                <tr>
-                    <th>Nama Peminjam</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Budi Hartomo</td>
-                    <td>Kepala IT</td>
-                </tr>
-                <tr>
-                    <td>Eka Setyo</td>
-                    <td>Mahasiswa</td>
-                </tr>
-            </tbody>
-        </table>
-    </body>
-    ";
-});
+// //router borrower
+// Route::get('/borrower', function(){
+//     return "
+//     <body>
+//         <h1>Halaman Daftar Peminjaman</h1>
+//         <table border='1' cellpadding='10' cellspacing='0'>
+//             <thead>
+//                 <tr>
+//                     <th>Nama Peminjam</th>
+//                     <th>Status</th>
+//                 </tr>
+//             </thead>
+//             <tbody>
+//                 <tr>
+//                     <td>Budi Hartomo</td>
+//                     <td>Kepala IT</td>
+//                 </tr>
+//                 <tr>
+//                     <td>Eka Setyo</td>
+//                     <td>Mahasiswa</td>
+//                 </tr>
+//             </tbody>
+//         </table>
+//     </body>
+//     ";
+// });
 
-//router borrowing
-Route::get('/borrowing', function(){
-    return "
-    <body>
-        <h1>Halaman Daftar Judul Buku yang Dipinjam</h1>
-        <table border='1' cellpadding='10' cellspacing='0'>
-            <thead>
-                <tr>
-                    <th>Nama Peminjam</th>
-                    <th>Nama Buku</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Budi Hartomo</td>
-                    <td>Tere Liye</td>
-                </tr>
-                <tr>
-                    <td>Eka Setyo</td>
-                    <td>Seporsi Mie Ayam Sebelum Mati</td>
-                </tr>
-            </tbody>
-        </table>
-    </body>
-    ";
-});
+// //router borrowing
+// Route::get('/borrowing', function(){
+//     return "
+//     <body>
+//         <h1>Halaman Daftar Judul Buku yang Dipinjam</h1>
+//         <table border='1' cellpadding='10' cellspacing='0'>
+//             <thead>
+//                 <tr>
+//                     <th>Nama Peminjam</th>
+//                     <th>Nama Buku</th>
+//                 </tr>
+//             </thead>
+//             <tbody>
+//                 <tr>
+//                     <td>Budi Hartomo</td>
+//                     <td>Tere Liye</td>
+//                 </tr>
+//                 <tr>
+//                     <td>Eka Setyo</td>
+//                     <td>Seporsi Mie Ayam Sebelum Mati</td>
+//                 </tr>
+//             </tbody>
+//         </table>
+//     </body>
+//     ";
+// });
 
 //modul 4
 Route::get('book-simple', function(){
@@ -183,5 +186,45 @@ Route::delete('/books/{id}', function($id){
 })->name('books.destroy');
 
 //route peminjam buku atau borrower
+Route::get('/borrower', function () {
+    $borrowers = Borrower::all(); 
+    return view('borrowers.index', compact('borrowers'));
+})->name('borrower.index');
+
+Route::get('/borrower/create', function () {
+    return view('borrowers.create');
+})->name('borrower.create');
+
+Route::post('/borrower', function (Request $request) {
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'kontak' => 'required|max:250',
+    ]);
+
+    Borrower::create($validatedData);
+
+    return redirect('/borrower')->with('success', 'Peminjam berhasil ditambahkan!');
+})->name('borrower.store');
 
 //route peminjam dan buku yang dipinjam atau borrowing
+Route::get('/borrowing', function () {
+    $borrowings = Borrowing::with(['borrower', 'book'])->get();
+    return view('borrowings.index', compact('borrowings'));
+})->name('borrowing.index');
+
+Route::get('/borrowing/create', function () {
+    $borrowers = Borrower::all();
+    $books = Book::all();
+    return view('borrowings.create', compact('borrowers', 'books'));
+})->name('borrowing.create');
+
+Route::post('/borrowing', function (Request $request) {
+    $validatedData = $request->validate([
+        'borrower_id' => 'required',
+        'book_id' => 'required',
+    ]);
+
+    Borrowing::create($validatedData);
+
+    return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil dicatat!');
+})->name('borrowing.store');
