@@ -17,18 +17,18 @@ class BookController extends Controller
     }
 
     public function store (Request $request){
-    $validatedData = $request->validate([
-        'title' => 'required',
-        'author' => 'required',
-        'year' => 'required',
-    ]);
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'year' => 'required',
+        ]);
 
-    $book = new Book();
-    $book->title = $validatedData['title'];
-    $book->author = $validatedData['author'];
-    $book->year = $validatedData['year'];
-    $book->save();
-    return redirect()-> route('books.store');
+        $book = new Book();
+        $book->title = $validatedData['title'];
+        $book->author = $validatedData['author'];
+        $book->year = $validatedData['year'];
+        $book->save();
+        return redirect()-> route('books.store');
     }
 
     public function edit($id) {
