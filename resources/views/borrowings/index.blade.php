@@ -16,6 +16,7 @@
                 <th>Nama Peminjam</th>
                 <th>Buku yang Dipinjam</th>
                 <th>Tanggal Pinjam</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,14 @@
                 <td>{{ $transaksi->borrower->name }}</td>
                 <td>{{ $transaksi->book->title }}</td>
                 <td>{{ $transaksi->created_at->format('d M Y') }}</td>
+                <td>
+                    <a href="{{ route('borrowing.edit', $transaksi->id) }}">Edit</a>
+                    <form action="{{ route('borrowing.destroy', $transaksi->id) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
             @endforeach
         </tbody>

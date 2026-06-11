@@ -129,124 +129,180 @@ Route::get('/book', function(){
 // });
 
 //modul 4
-// Route::get('book-simple', function(){
-//     return view('book_simple', ['title' => 'Bumi Manusia']);
-// });
+Route::get('book-simple', function(){
+    return view('book_simple', ['title' => 'Bumi Manusia']);
+});
 
-// //route tampilkan data buku
-// Route::get('/books', function(){
-//     $books = Book::all();
-//     return view('books.index', ['books' => $books]);
-// })-> name('books.index');
+//route tampilkan data buku
+Route::get('/books', function(){
+    $books = Book::all();
+    return view('books.index', ['books' => $books]);
+})-> name('books.index');
 
-// //route tampilkan add buku
-// Route::get('/books/create', function(){
-//     return view('books.create');
-// })-> name('books.create');
+//route tampilkan add buku
+Route::get('/books/create', function(){
+    return view('books.create');
+})-> name('books.create');
 
-// //route tampilkan data buku yang baru ditambahkan
-// Route::post('/books', function (Request $request){
-//     $validatedData = $request->validate([
-//         'title' => 'required',
-//         'author' => 'required',
-//         'year' => 'required',
-//     ]);
+//route tampilkan data buku yang baru ditambahkan
+Route::post('/books', function (Request $request){
+    $validatedData = $request->validate([
+        'title' => 'required',
+        'author' => 'required',
+        'year' => 'required',
+    ]);
 
-//     $book = new Book();
-//     $book->title = $validatedData['title'];
-//     $book->author = $validatedData['author'];
-//     $book->year = $validatedData['year'];
-//     $book->save();
-// })-> name('books.store');
+    $book = new Book();
+    $book->title = $validatedData['title'];
+    $book->author = $validatedData['author'];
+    $book->year = $validatedData['year'];
+    $book->save();
+})-> name('books.store');
 
-// //route tampilkan form edit buku
-// Route::get('/books/{id}/edit', function ($id){
-//     $book = Book::findOrFail($id);
-//     return view('books.edit', ['book' => $book]);
-// })->name('books.edit');
+//route tampilkan form edit buku
+Route::get('/books/{id}/edit', function ($id){
+    $book = Book::findOrFail($id);
+    return view('books.edit', ['book' => $book]);
+})->name('books.edit');
 
-// //route tampilkan data buku yang diubah
-// Route::put('/books/{id}', function(Request $request, $id){
-//     $validatedData = $request->validate([
-//         'title' => 'required',
-//         'author' => 'required',
-//         'year' => 'required',
-//     ]);
+//route tampilkan data buku yang diubah
+Route::put('/books/{id}', function(Request $request, $id){
+    $validatedData = $request->validate([
+        'title' => 'required',
+        'author' => 'required',
+        'year' => 'required',
+    ]);
 
-//     $book = Book::findOrFail($id);
-//     $book->title = $validatedData['title'];
-//     $book->author = $validatedData['author'];
-//     $book->year = $validatedData['year'];
-//     $book->save();
-// })->name('books.update');
+    $book = Book::findOrFail($id);
+    $book->title = $validatedData['title'];
+    $book->author = $validatedData['author'];
+    $book->year = $validatedData['year'];
+    $book->save();
+})->name('books.update');
 
-// //route hapus data buku
-// Route::delete('/books/{id}', function($id){
-//     $book = Book::findOrFail($id);
-//     $book->delete();
+//route hapus data buku
+Route::delete('/books/{id}', function($id){
+    $book = Book::findOrFail($id);
+    $book->delete();
 
-//     return redirect()->route('books.index');
-// })->name('books.destroy');
+    return redirect()->route('books.index');
+})->name('books.destroy');
 
-// //route peminjam buku atau borrower
-// Route::get('/borrower', function () {
-//     $borrowers = Borrower::all(); 
-//     return view('borrowers.index', compact('borrowers'));
-// })->name('borrower.index');
+//route borrower
+Route::get('/borrower', function () {
+    $borrowers = Borrower::all(); 
+    return view('borrowers.index', compact('borrowers'));
+})->name('borrower.index');
 
-// Route::get('/borrower/create', function () {
-//     return view('borrowers.create');
-// })->name('borrower.create');
+Route::get('/borrower/create', function () {
+    return view('borrowers.create');
+})->name('borrower.create');
 
-// Route::post('/borrower', function (Request $request) {
-//     $validatedData = $request->validate([
-//         'name' => 'required|string|max:255',
-//         'kontak' => 'required|max:250',
-//     ]);
+Route::post('/borrower', function (Request $request) {
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'kontak' => 'required|max:250',
+    ]);
 
-//     Borrower::create($validatedData);
+    Borrower::create($validatedData);
 
-//     return redirect('/borrower')->with('success', 'Peminjam berhasil ditambahkan!');
-// })->name('borrower.store');
+    return redirect('/borrower')->with('success', 'Peminjam berhasil ditambahkan!');
+})->name('borrower.store');
 
-// //route peminjam dan buku yang dipinjam atau borrowing
-// Route::get('/borrowing', function () {
-//     $borrowings = Borrowing::with(['borrower', 'book'])->get();
-//     return view('borrowings.index', compact('borrowings'));
-// })->name('borrowing.index');
+Route::get('/borrower/{id}/edit', function ($id) {
+    $borrower = Borrower::findOrFail($id); 
+    return view('borrowers.edit', compact('borrower'));
+})->name('borrower.edit');
 
-// Route::get('/borrowing/create', function () {
-//     $borrowers = Borrower::all();
-//     $books = Book::all();
-//     return view('borrowings.create', compact('borrowers', 'books'));
-// })->name('borrowing.create');
+Route::put('/borrower/{id}', function(Illuminate\Http\Request $request, $id){
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'kontak' => 'required|max:250',
+    ]);
 
-// Route::post('/borrowing', function (Request $request) {
-//     $validatedData = $request->validate([
-//         'borrower_id' => 'required',
-//         'book_id' => 'required',
-//     ]);
+    $borrower = Borrower::findOrFail($id);
+    $borrower->name = $validatedData['name'];
+    $borrower->kontak = $validatedData['kontak'];
+    $borrower->save();
 
-//     Borrowing::create($validatedData);
+    return redirect('/borrower')->with('success', 'Data peminjam berhasil diubah!');
+})->name('borrower.update');
 
-//     return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil dicatat!');
-// })->name('borrowing.store');
+Route::delete('/borrower/{id}', function ($id) {
+    $borrower = Borrower::findOrFail($id); 
+    Borrowing::where('borrower_id', $id)->delete();
+    $borrower->delete();     
+    return redirect('/borrower')->with('success', 'Data peminjam berhasil dihapus!');
+})->name('borrower.destroy');
+
+
+//route borrowing
+Route::get('/borrowing', function () {
+    $borrowings = Borrowing::with(['borrower', 'book'])->get();
+    return view('borrowings.index', compact('borrowings'));
+})->name('borrowing.index');
+
+Route::get('/borrowing/create', function () {
+    $borrowers = Borrower::all();
+    $books = Book::all();
+    return view('borrowings.create', compact('borrowers', 'books'));
+})->name('borrowing.create');
+
+Route::post('/borrowing', function (Request $request) {
+    $validatedData = $request->validate([
+        'borrower_id' => 'required',
+        'book_id' => 'required',
+    ]);
+
+    Borrowing::create($validatedData);
+
+    return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil dicatat!');
+})->name('borrowing.store');
+
+Route::get('/borrowing/{id}/edit', function ($id) {
+    $borrowing = Borrowing::findOrFail($id);
+    $borrowers = Borrower::all();
+    $books = Book::all();
+    
+    return view('borrowings.edit', compact('borrowing', 'borrowers', 'books'));
+})->name('borrowing.edit');
+
+Route::put('/borrowing/{id}', function(Request $request, $id){
+    $validatedData = $request->validate([
+        'borrower_id' => 'required',
+        'book_id' => 'required',
+    ]);
+
+    $borrowing = Borrowing::findOrFail($id);
+    $borrowing->borrower_id = $validatedData['borrower_id'];
+    $borrowing->book_id = $validatedData['book_id'];
+    $borrowing->save();
+
+    return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil diubah!');
+})->name('borrowing.update');
+
+Route::delete('/borrowing/{id}', function ($id) {
+    $borrowing = Borrowing::findOrFail($id); 
+    $borrowing->delete(); 
+    
+    return redirect('/borrowing')->with('success', 'Transaksi peminjaman berhasil dihapus!');
+})->name('borrowing.destroy');
 
 
 // prak5
-Route::get('/books', [BookController::class, 'index'])->name('books.index');
-Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
-Route::post('/books', [BookController::class, 'store'])->name('books.store');
-Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
-Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
-Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+// Route::get('/books', [BookController::class, 'index'])->name('books.index');
+// Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+// Route::post('/books', [BookController::class, 'store'])->name('books.store');
+// Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
+// Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
+// Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
-//borrower
-Route::get('/borrower', [ControllersBorrower::class, 'index'])->name('borrower.index');
-Route::get('/borrower/create', [ControllersBorrower::class, 'create'])->name('borrower.create');
-Route::post('/borrower', [ControllersBorrower::class, 'store'])->name('borrower.store');
+// //borrower
+// Route::get('/borrower', [ControllersBorrower::class, 'index'])->name('borrower.index');
+// Route::get('/borrower/create', [ControllersBorrower::class, 'create'])->name('borrower.create');
+// Route::post('/borrower', [ControllersBorrower::class, 'store'])->name('borrower.store');
 
-//borrowing
-Route::get('/borrowing', [ControllersBorrowing::class, 'index'])->name('borrowing.index');
-Route::get('/borrowing/create', [ControllersBorrowing::class, 'create'])->name('borrowing.create');
-Route::post('/borrowing', [ControllersBorrowing::class, 'store'])->name('borrowing.store');
+// //borrowing
+// Route::get('/borrowing', [ControllersBorrowing::class, 'index'])->name('borrowing.index');
+// Route::get('/borrowing/create', [ControllersBorrowing::class, 'create'])->name('borrowing.create');
+// Route::post('/borrowing', [ControllersBorrowing::class, 'store'])->name('borrowing.store');
