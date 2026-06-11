@@ -31,7 +31,7 @@ class BookController extends Controller
         return redirect()-> route('books.store');
     }
 
-    public function edit($id) {
+    public function edit(int $id) {
         $book = Book::findOrFail($id);
         return view('books.edit', ['book' => $book]);
     }
@@ -51,7 +51,7 @@ class BookController extends Controller
         return redirect()->route('books.index');
     }
 
-    public function destroy($id){
+    public function destroy(int $id){
         $book = Book::findOrFail($id);
         $book->delete();
         return redirect()->route('books.index');

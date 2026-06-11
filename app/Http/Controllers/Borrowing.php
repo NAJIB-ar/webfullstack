@@ -30,4 +30,32 @@ class Borrowing extends Controller
 
         return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil dicatat!');
     }
+
+    public function edit(int $id) {
+    $borrowing = BorrowingModel::findOrFail($id);
+    $borrowers = Borrower::all();
+    $books = Book::all();
+    
+    return view('borrowings.edit', compact('borrowing', 'borrowers', 'books'));
+    }
+
+    public function update(Request $request, int $id){
+        $validatedData = $request->validate([
+            'borrower_id' => 'required',
+            'book_id' => 'required',
+        ]);
+
+        $borrowing = BorrowingModel::findOrFail($id);
+        $borrowing->borrower_id = $validatedData['borrower_id'];
+        $borrowing->book_id = $validatedData['book_id'];
+        $borrowing->save();
+
+        return redirect()->route('borrowing.index');
+    }
+
+    public function destroy(int $id){
+        $borrowing = BorrowingModel::findOrFail($id); 
+        $borrowing->delete();     
+        return redirect()->route('borrower.index');
+    }
 }

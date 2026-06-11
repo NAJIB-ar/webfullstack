@@ -189,104 +189,104 @@ Route::delete('/books/{id}', function($id){
 })->name('books.destroy');
 
 //route borrower
-Route::get('/borrower', function () {
-    $borrowers = Borrower::all(); 
-    return view('borrowers.index', compact('borrowers'));
-})->name('borrower.index');
+// Route::get('/borrower', function () {
+//     $borrowers = Borrower::all(); 
+//     return view('borrowers.index', compact('borrowers'));
+// })->name('borrower.index');
 
-Route::get('/borrower/create', function () {
-    return view('borrowers.create');
-})->name('borrower.create');
+// Route::get('/borrower/create', function () {
+//     return view('borrowers.create');
+// })->name('borrower.create');
 
-Route::post('/borrower', function (Request $request) {
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'kontak' => 'required|max:250',
-    ]);
+// Route::post('/borrower', function (Request $request) {
+//     $validatedData = $request->validate([
+//         'name' => 'required|string|max:255',
+//         'kontak' => 'required|max:250',
+//     ]);
 
-    Borrower::create($validatedData);
+//     Borrower::create($validatedData);
 
-    return redirect('/borrower')->with('success', 'Peminjam berhasil ditambahkan!');
-})->name('borrower.store');
+//     return redirect('/borrower')->with('success', 'Peminjam berhasil ditambahkan!');
+// })->name('borrower.store');
 
-Route::get('/borrower/{id}/edit', function ($id) {
-    $borrower = Borrower::findOrFail($id); 
-    return view('borrowers.edit', compact('borrower'));
-})->name('borrower.edit');
+// Route::get('/borrower/{id}/edit', function ($id) {
+//     $borrower = Borrower::findOrFail($id); 
+//     return view('borrowers.edit', compact('borrower'));
+// })->name('borrower.edit');
 
-Route::put('/borrower/{id}', function(Illuminate\Http\Request $request, $id){
-    $validatedData = $request->validate([
-        'name' => 'required|string|max:255',
-        'kontak' => 'required|max:250',
-    ]);
+// Route::put('/borrower/{id}', function(Request $request, $id){
+//     $validatedData = $request->validate([
+//         'name' => 'required|string|max:255',
+//         'kontak' => 'required|max:250',
+//     ]);
 
-    $borrower = Borrower::findOrFail($id);
-    $borrower->name = $validatedData['name'];
-    $borrower->kontak = $validatedData['kontak'];
-    $borrower->save();
+//     $borrower = Borrower::findOrFail($id);
+//     $borrower->name = $validatedData['name'];
+//     $borrower->kontak = $validatedData['kontak'];
+//     $borrower->save();
 
-    return redirect('/borrower')->with('success', 'Data peminjam berhasil diubah!');
-})->name('borrower.update');
+//     return redirect('/borrower')->with('success', 'Data peminjam berhasil diubah!');
+// })->name('borrower.update');
 
-Route::delete('/borrower/{id}', function ($id) {
-    $borrower = Borrower::findOrFail($id); 
-    Borrowing::where('borrower_id', $id)->delete();
-    $borrower->delete();     
-    return redirect('/borrower')->with('success', 'Data peminjam berhasil dihapus!');
-})->name('borrower.destroy');
+// Route::delete('/borrower/{id}', function ($id) {
+//     $borrower = Borrower::findOrFail($id); 
+//     Borrowing::where('borrower_id', $id)->delete();
+//     $borrower->delete();     
+//     return redirect('/borrower')->with('success', 'Data peminjam berhasil dihapus!');
+// })->name('borrower.destroy');
 
 
 //route borrowing
-Route::get('/borrowing', function () {
-    $borrowings = Borrowing::with(['borrower', 'book'])->get();
-    return view('borrowings.index', compact('borrowings'));
-})->name('borrowing.index');
+// Route::get('/borrowing', function () {
+//     $borrowings = Borrowing::with(['borrower', 'book'])->get();
+//     return view('borrowings.index', compact('borrowings'));
+// })->name('borrowing.index');
 
-Route::get('/borrowing/create', function () {
-    $borrowers = Borrower::all();
-    $books = Book::all();
-    return view('borrowings.create', compact('borrowers', 'books'));
-})->name('borrowing.create');
+// Route::get('/borrowing/create', function () {
+//     $borrowers = Borrower::all();
+//     $books = Book::all();
+//     return view('borrowings.create', compact('borrowers', 'books'));
+// })->name('borrowing.create');
 
-Route::post('/borrowing', function (Request $request) {
-    $validatedData = $request->validate([
-        'borrower_id' => 'required',
-        'book_id' => 'required',
-    ]);
+// Route::post('/borrowing', function (Request $request) {
+//     $validatedData = $request->validate([
+//         'borrower_id' => 'required',
+//         'book_id' => 'required',
+//     ]);
 
-    Borrowing::create($validatedData);
+//     Borrowing::create($validatedData);
 
-    return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil dicatat!');
-})->name('borrowing.store');
+//     return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil dicatat!');
+// })->name('borrowing.store');
 
-Route::get('/borrowing/{id}/edit', function ($id) {
-    $borrowing = Borrowing::findOrFail($id);
-    $borrowers = Borrower::all();
-    $books = Book::all();
+// Route::get('/borrowing/{id}/edit', function ($id) {
+//     $borrowing = Borrowing::findOrFail($id);
+//     $borrowers = Borrower::all();
+//     $books = Book::all();
     
-    return view('borrowings.edit', compact('borrowing', 'borrowers', 'books'));
-})->name('borrowing.edit');
+//     return view('borrowings.edit', compact('borrowing', 'borrowers', 'books'));
+// })->name('borrowing.edit');
 
-Route::put('/borrowing/{id}', function(Request $request, $id){
-    $validatedData = $request->validate([
-        'borrower_id' => 'required',
-        'book_id' => 'required',
-    ]);
+// Route::put('/borrowing/{id}', function(Request $request, $id){
+//     $validatedData = $request->validate([
+//         'borrower_id' => 'required',
+//         'book_id' => 'required',
+//     ]);
 
-    $borrowing = Borrowing::findOrFail($id);
-    $borrowing->borrower_id = $validatedData['borrower_id'];
-    $borrowing->book_id = $validatedData['book_id'];
-    $borrowing->save();
+//     $borrowing = Borrowing::findOrFail($id);
+//     $borrowing->borrower_id = $validatedData['borrower_id'];
+//     $borrowing->book_id = $validatedData['book_id'];
+//     $borrowing->save();
 
-    return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil diubah!');
-})->name('borrowing.update');
+//     return redirect('/borrowing')->with('success', 'Transaksi Peminjaman berhasil diubah!');
+// })->name('borrowing.update');
 
-Route::delete('/borrowing/{id}', function ($id) {
-    $borrowing = Borrowing::findOrFail($id); 
-    $borrowing->delete(); 
+// Route::delete('/borrowing/{id}', function ($id) {
+//     $borrowing = Borrowing::findOrFail($id); 
+//     $borrowing->delete(); 
     
-    return redirect('/borrowing')->with('success', 'Transaksi peminjaman berhasil dihapus!');
-})->name('borrowing.destroy');
+//     return redirect('/borrowing')->with('success', 'Transaksi peminjaman berhasil dihapus!');
+// })->name('borrowing.destroy');
 
 
 // prak5
@@ -298,11 +298,17 @@ Route::delete('/borrowing/{id}', function ($id) {
 // Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
 
 // //borrower
-// Route::get('/borrower', [ControllersBorrower::class, 'index'])->name('borrower.index');
-// Route::get('/borrower/create', [ControllersBorrower::class, 'create'])->name('borrower.create');
-// Route::post('/borrower', [ControllersBorrower::class, 'store'])->name('borrower.store');
+Route::get('/borrower', [ControllersBorrower::class, 'index'])->name('borrower.index');
+Route::get('/borrower/create', [ControllersBorrower::class, 'create'])->name('borrower.create');
+Route::post('/borrower', [ControllersBorrower::class, 'store'])->name('borrower.store');
+Route::get('/borrower/{id}/edit', [ControllersBorrower::class, 'edit'])->name('borrower.edit');
+Route::put('/borrower/{id}', [ControllersBorrower::class, 'update'])->name('borrower.update');
+Route::delete('/borrower/{id}', [ControllersBorrower::class, 'destroy'])->name('borrower.destroy');
 
 // //borrowing
-// Route::get('/borrowing', [ControllersBorrowing::class, 'index'])->name('borrowing.index');
-// Route::get('/borrowing/create', [ControllersBorrowing::class, 'create'])->name('borrowing.create');
-// Route::post('/borrowing', [ControllersBorrowing::class, 'store'])->name('borrowing.store');
+Route::get('/borrowing', [ControllersBorrowing::class, 'index'])->name('borrowing.index');
+Route::get('/borrowing/create', [ControllersBorrowing::class, 'create'])->name('borrowing.create');
+Route::post('/borrowing', [ControllersBorrowing::class, 'store'])->name('borrowing.store');
+Route::get('/borrowing/{id}/edit', [ControllersBorrowing::class, 'edit'])->name('borrowing.edit');
+Route::put('/borrowing/{id}', [ControllersBorrowing::class, 'update'])->name('borrowing.update');
+Route::delete('/borrowing/{id}', [ControllersBorrowing::class, 'destroy'])->name('borrowing.destroy');
