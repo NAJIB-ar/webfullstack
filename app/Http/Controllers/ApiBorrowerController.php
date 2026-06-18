@@ -14,15 +14,18 @@ class ApiBorrowerController extends Controller
         }
         
     public function show(int $id){
-        $borrowers = Borrower::findOrFail($id);
-        return new BorrowerCollection($borrowers);
+        $borrower = Borrower::findOrFail($id);
+        return response()->json([
+            'message' => 'Detail Data Peminjam',
+            'data' => $borrower
+        ], 200);
     }
 
     public function store(Request $request){
-        $borrowers = new Borrower();
-        $borrowers->name = $request->input('name');
-        $borrowers->kontak = $request->input('kontak'); 
-        $borrowers->save();
+        $borrower = new Borrower();
+        $borrower->name = $request->input('name');
+        $borrower->kontak = $request->input('kontak'); 
+        $borrower->save();
 
         return response()->json(
             ['message'=> 'Data Berhasil Dibuat'], 201
@@ -30,10 +33,10 @@ class ApiBorrowerController extends Controller
     }
 
     public function update(Request $request, int $id){
-        $borrowers = Borrower::findOrFail($id);
-        $borrowers->name = $request->input('name');
-        $borrowers->kontak = $request->input('kontak');
-        $borrowers->save();
+        $borrower = Borrower::findOrFail($id);
+        $borrower->name = $request->input('name');
+        $borrower->kontak = $request->input('kontak');
+        $borrower->save();
 
         return response()->json(
             ['message'=> 'Data Berhasil Diupdate'], 200
@@ -41,8 +44,8 @@ class ApiBorrowerController extends Controller
     }
 
     public function destroy(int $id){
-        $borrowers = Borrower::findOrFail($id);
-        $borrowers->delete();
+        $borrower = Borrower::findOrFail($id);
+        $borrower->delete();
 
         return response()->json(
             ['message' => 'Data Berhasil Dihapus'], 200
