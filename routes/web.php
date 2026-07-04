@@ -157,6 +157,8 @@ Route::post('/books', function (Request $request){
     $book->author = $validatedData['author'];
     $book->year = $validatedData['year'];
     $book->save();
+
+    return redirect()->route('books.index');
 })-> name('books.store');
 
 //route tampilkan form edit buku
@@ -178,6 +180,8 @@ Route::put('/books/{id}', function(Request $request, $id){
     $book->author = $validatedData['author'];
     $book->year = $validatedData['year'];
     $book->save();
+
+    return redirect()->route('books.index');
 })->name('books.update');
 
 //route hapus data buku

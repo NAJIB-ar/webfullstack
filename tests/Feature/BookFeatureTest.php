@@ -9,18 +9,22 @@ use Tests\TestCase;
 
 class BookFeatureTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_index_data() {
         $response = $this->get('/books');
         $response->assertStatus(200);
     }
     
     public function test_store_data() {
-        $book = Book::factory()->create();
+        $book = Book::factory()->make();
         $response = $this->post('/books', $book->toArray());
         $response->assertStatus(302);
-        $this->assertDatabaseHas('books', $book->toArray());
-        $book->delete();
-        }
+        $this->assertDatabaseHas('books', [
+            'title' => $book->title,
+            'author' => $book->author,
+            'year' => $book->year,
+        ]);
+    }
         
     public function test_edit_data() {
         $book = Book::factory()->create();    
