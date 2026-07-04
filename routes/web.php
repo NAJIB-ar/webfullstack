@@ -48,7 +48,7 @@ Route::prefix('admin')->group(function () {
 
 //latihan modul 3
 //roter book
-Route::get('/book', function(){
+Route::get('/book', function () {
     return "
     <body>
         <h1>Halaman Daftar Buku</h1>
@@ -129,23 +129,23 @@ Route::get('/book', function(){
 // });
 
 //modul 4
-Route::get('book-simple', function(){
+Route::get('book-simple', function () {
     return view('book_simple', ['title' => 'Bumi Manusia']);
 });
 
 //route tampilkan data buku
-Route::get('/books', function(){
+Route::get('/books', function () {
     $books = Book::all();
     return view('books.index', ['books' => $books]);
-})-> name('books.index');
+})->name('books.index');
 
 //route tampilkan add buku
-Route::get('/books/create', function(){
+Route::get('/books/create', function () {
     return view('books.create');
-})-> name('books.create');
+})->name('books.create');
 
 //route tampilkan data buku yang baru ditambahkan
-Route::post('/books', function (Request $request){
+Route::post('/books', function (Request $request) {
     $validatedData = $request->validate([
         'title' => 'required',
         'author' => 'required',
@@ -159,16 +159,16 @@ Route::post('/books', function (Request $request){
     $book->save();
 
     return redirect()->route('books.index');
-})-> name('books.store');
+})->name('books.store');
 
 //route tampilkan form edit buku
-Route::get('/books/{id}/edit', function ($id){
+Route::get('/books/{id}/edit', function ($id) {
     $book = Book::findOrFail($id);
     return view('books.edit', ['book' => $book]);
 })->name('books.edit');
 
 //route tampilkan data buku yang diubah
-Route::put('/books/{id}', function(Request $request, $id){
+Route::put('/books/{id}', function (Request $request, $id) {
     $validatedData = $request->validate([
         'title' => 'required',
         'author' => 'required',
@@ -185,7 +185,7 @@ Route::put('/books/{id}', function(Request $request, $id){
 })->name('books.update');
 
 //route hapus data buku
-Route::delete('/books/{id}', function($id){
+Route::delete('/books/{id}', function ($id) {
     $book = Book::findOrFail($id);
     $book->delete();
 
@@ -194,7 +194,7 @@ Route::delete('/books/{id}', function($id){
 
 //route borrower
 // Route::get('/borrower', function () {
-//     $borrowers = Borrower::all(); 
+//     $borrowers = Borrower::all();
 //     return view('borrowers.index', compact('borrowers'));
 // })->name('borrower.index');
 
@@ -214,7 +214,7 @@ Route::delete('/books/{id}', function($id){
 // })->name('borrower.store');
 
 // Route::get('/borrower/{id}/edit', function ($id) {
-//     $borrower = Borrower::findOrFail($id); 
+//     $borrower = Borrower::findOrFail($id);
 //     return view('borrowers.edit', compact('borrower'));
 // })->name('borrower.edit');
 
@@ -233,9 +233,9 @@ Route::delete('/books/{id}', function($id){
 // })->name('borrower.update');
 
 // Route::delete('/borrower/{id}', function ($id) {
-//     $borrower = Borrower::findOrFail($id); 
+//     $borrower = Borrower::findOrFail($id);
 //     Borrowing::where('borrower_id', $id)->delete();
-//     $borrower->delete();     
+//     $borrower->delete();
 //     return redirect('/borrower')->with('success', 'Data peminjam berhasil dihapus!');
 // })->name('borrower.destroy');
 
@@ -267,7 +267,7 @@ Route::delete('/books/{id}', function($id){
 //     $borrowing = Borrowing::findOrFail($id);
 //     $borrowers = Borrower::all();
 //     $books = Book::all();
-    
+
 //     return view('borrowings.edit', compact('borrowing', 'borrowers', 'books'));
 // })->name('borrowing.edit');
 
@@ -286,9 +286,9 @@ Route::delete('/books/{id}', function($id){
 // })->name('borrowing.update');
 
 // Route::delete('/borrowing/{id}', function ($id) {
-//     $borrowing = Borrowing::findOrFail($id); 
-//     $borrowing->delete(); 
-    
+//     $borrowing = Borrowing::findOrFail($id);
+//     $borrowing->delete();
+
 //     return redirect('/borrowing')->with('success', 'Transaksi peminjaman berhasil dihapus!');
 // })->name('borrowing.destroy');
 
@@ -316,3 +316,12 @@ Route::post('/borrowing', [ControllersBorrowing::class, 'store'])->name('borrowi
 Route::get('/borrowing/{id}/edit', [ControllersBorrowing::class, 'edit'])->name('borrowing.edit');
 Route::put('/borrowing/{id}', [ControllersBorrowing::class, 'update'])->name('borrowing.update');
 Route::delete('/borrowing/{id}', [ControllersBorrowing::class, 'destroy'])->name('borrowing.destroy');
+
+
+// prak8
+Route::get('/user-profile/{useer_id}', function (string $id) {
+    $user = User::find($id);
+    echo $user->name;
+    echo "<br>";
+    echo $user->profile->address;
+});

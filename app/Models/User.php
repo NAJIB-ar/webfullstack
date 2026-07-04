@@ -29,4 +29,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // relasi one to on dengan UserProfile
+    public function profile()
+    {
+        return $this->hasOne('App\Models\UserProfile');
+    }
 }
